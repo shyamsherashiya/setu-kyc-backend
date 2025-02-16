@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:admin@db/kyc
+      - SETU_CLIENT_ID=292c6e76-dabf-49c4-8e48-90fba2916673
+      - SETU_CLIENT_SECRET=7IZMe9zvoBBuBukLiCP7n4KLwSOy11oP
+      - SETU_PRODUCT_INSTANCE_ID=439244ff-114e-41a8-ae74-a783f160622d
+      - SECRET_KEY=thisisaverysecretkey
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=kyc
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
